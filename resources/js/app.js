@@ -1,20 +1,15 @@
-import { plugin, InertiaApp } from '@inertiajs/inertia-vue'
+import { createInertiaApp } from '@inertiajs/vue2'
 import Vue from 'vue'
-import Home from './Pages/Home.vue'
 
-Vue.use(plugin)
-
-const pages = {
-    'Home': Home,
-}
-
-const el = document.getElementById('app')
-
-new Vue({
-    render: h => h(InertiaApp, {
-        props: {
-            initialPage: JSON.parse(el.dataset.page),
-            resolveComponent: name => pages[name],
-        },
-    }),
-}).$mount(el)
+createInertiaApp({
+    resolve: name => {
+        const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
+        return pages[`./Pages/${name}.vue`]
+    },
+    setup({ el, App, props, plugin }) {
+        Vue.use(plugin)
+        new Vue({
+            render: h => h(App, props),
+        }).$mount(el)
+    },
+})

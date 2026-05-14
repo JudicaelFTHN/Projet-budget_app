@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
-import vue from '@vitejs/plugin-vue2'
+import vue2 from '@vitejs/plugin-vue2'
 
 export default defineConfig({
     plugins: [
@@ -8,6 +8,6 @@ export default defineConfig({
             input: ['resources/js/app.js'],
             refresh: true,
         }),
-        vue(),
+        vue2(),
     ],
 })

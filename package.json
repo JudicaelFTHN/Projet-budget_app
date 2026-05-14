@@ -6,16 +6,16 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "axios": "^1.6.4",
-        "laravel-mix": "^6.0.49",
-        "laravel-vite-plugin": "^1.0.0",
-        "vite": "^5.0.0"
+        "@vitejs/plugin-vue2": "^2.3.1",
+        "autoprefixer": "^10.5.0",
+        "axios": "^1.7.4",
+        "laravel-vite-plugin": "^1.0",
+        "vite": "^5.0"
     },
     "dependencies": {
-        "@inertiajs/inertia": "^0.9.0",
-        "@inertiajs/inertia-vue": "^0.6.0",
-        "@vitejs/plugin-vue2": "^2.3.4",
-        "vue": "^2.7.14",
-        "vue-template-compiler": "^2.7.14"
+        "@inertiajs/vue2": "^1.0.0",
+        "@popperjs/core": "^2.11.8",
+        "bootstrap": "^5.3.8",
+        "vue": "^2.7.16"
     }
 }
