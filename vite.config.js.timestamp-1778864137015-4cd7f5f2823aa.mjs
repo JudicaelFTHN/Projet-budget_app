@@ -1,0 +1,17 @@
+// vite.config.js
+import { defineConfig } from "file:///F:/laragon/www/LARAVEL/budget-app/node_modules/vite/dist/node/index.js";
+import laravel from "file:///F:/laragon/www/LARAVEL/budget-app/node_modules/laravel-vite-plugin/dist/index.js";
+import vue2 from "file:///F:/laragon/www/LARAVEL/budget-app/node_modules/@vitejs/plugin-vue2/dist/index.mjs";
+var vite_config_default = defineConfig({
+  plugins: [
+    laravel({
+      input: ["resources/js/app.js"],
+      refresh: true
+    }),
+    vue2()
+  ]
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCJGOlxcXFxsYXJhZ29uXFxcXHd3d1xcXFxMQVJBVkVMXFxcXGJ1ZGdldC1hcHBcIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfZmlsZW5hbWUgPSBcIkY6XFxcXGxhcmFnb25cXFxcd3d3XFxcXExBUkFWRUxcXFxcYnVkZ2V0LWFwcFxcXFx2aXRlLmNvbmZpZy5qc1wiO2NvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9pbXBvcnRfbWV0YV91cmwgPSBcImZpbGU6Ly8vRjovbGFyYWdvbi93d3cvTEFSQVZFTC9idWRnZXQtYXBwL3ZpdGUuY29uZmlnLmpzXCI7aW1wb3J0IHsgZGVmaW5lQ29uZmlnIH0gZnJvbSAndml0ZSdcbmltcG9ydCBsYXJhdmVsIGZyb20gJ2xhcmF2ZWwtdml0ZS1wbHVnaW4nXG5pbXBvcnQgdnVlMiBmcm9tICdAdml0ZWpzL3BsdWdpbi12dWUyJ1xuXG5leHBvcnQgZGVmYXVsdCBkZWZpbmVDb25maWcoe1xuICAgIHBsdWdpbnM6IFtcbiAgICAgICAgbGFyYXZlbCh7XG4gICAgICAgICAgICBpbnB1dDogWydyZXNvdXJjZXMvanMvYXBwLmpzJ10sXG4gICAgICAgICAgICByZWZyZXNoOiB0cnVlLFxuICAgICAgICB9KSxcbiAgICAgICAgdnVlMigpLFxuICAgIF0sXG59KVxuIl0sCiAgIm1hcHBpbmdzIjogIjtBQUErUixTQUFTLG9CQUFvQjtBQUM1VCxPQUFPLGFBQWE7QUFDcEIsT0FBTyxVQUFVO0FBRWpCLElBQU8sc0JBQVEsYUFBYTtBQUFBLEVBQ3hCLFNBQVM7QUFBQSxJQUNMLFFBQVE7QUFBQSxNQUNKLE9BQU8sQ0FBQyxxQkFBcUI7QUFBQSxNQUM3QixTQUFTO0FBQUEsSUFDYixDQUFDO0FBQUEsSUFDRCxLQUFLO0FBQUEsRUFDVDtBQUNKLENBQUM7IiwKICAibmFtZXMiOiBbXQp9Cg==

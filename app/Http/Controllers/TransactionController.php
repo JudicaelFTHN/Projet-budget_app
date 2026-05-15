@@ -10,12 +10,10 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::where('user_id', auth()->id())
-            ->orderBy('date', 'desc')
-            ->get();
-
+        $user = auth()->user();
         return Inertia::render('Transactions/Index', [
-            'transactions' => $transactions
+            'transactions' => $user->transactions()->with('category')->orderByDesc('date')->get(),
+            'categories'   => $user->categories()->get(),
         ]);
     }
 
@@ -26,6 +24,7 @@ class TransactionController extends Controller
             'amount'      => 'required|numeric|min:0.01',
             'description' => 'nullable|string|max:255',
             'date'        => 'required|date',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         Transaction::create([
@@ -34,6 +33,7 @@ class TransactionController extends Controller
             'amount'      => $request->amount,
             'description' => $request->description,
             'date'        => $request->date,
+            'category_id' => $request->category_id, // ← AJOUTÉ
         ]);
 
         return redirect()->route('transactions.index');
@@ -48,9 +48,16 @@ class TransactionController extends Controller
             'amount'      => 'required|numeric|min:0.01',
             'description' => 'nullable|string|max:255',
             'date'        => 'required|date',
+            'category_id' => 'nullable|exists:categories,id', // ← AJOUTÉ
         ]);
 
-        $transaction->update($request->only('type', 'amount', 'description', 'date'));
+        $transaction->update([
+            'type'        => $request->type,
+            'amount'      => $request->amount,
+            'description' => $request->description,
+            'date'        => $request->date,
+            'category_id' => $request->category_id, // ← AJOUTÉ
+        ]);
 
         return redirect()->route('transactions.index');
     }
@@ -58,9 +65,7 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         abort_if($transaction->user_id !== auth()->id(), 403);
-
         $transaction->delete();
-
         return redirect()->route('transactions.index');
     }
 }

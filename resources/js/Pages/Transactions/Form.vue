@@ -51,6 +51,17 @@
       <small v-if="errors.description" style="color:#ef5350;">{{ errors.description }}</small>
     </div>
 
+    <!-- Après le champ Description, avant Date -->
+<div class="mb-3">
+  <label class="label-dark"><i class="bi bi-tag me-1"></i>Catégorie</label>
+  <select v-model="form.category_id" class="input-dark">
+    <option :value="null">— Sans catégorie —</option>
+    <option v-for="cat in categories" :key="cat.id" :value="cat.id">
+      {{ cat.name }}
+    </option>
+  </select>
+</div>
+
     <!-- Date -->
     <div class="mb-4">
       <label class="label-dark"><i class="bi bi-calendar3 me-1"></i>Date</label>
@@ -84,7 +95,8 @@
 export default {
   props: {
     transaction: { type: Object, default: null },
-    errors:      { type: Object, default: () => ({}) }
+    errors:      { type: Object, default: () => ({}) },
+    categories:  { type: Array,  default: () => [] },
   },
   data() {
     return {
@@ -94,6 +106,7 @@ export default {
         amount:      this.transaction?.amount      || '',
         description: this.transaction?.description || '',
         date:        this.transaction?.date        || new Date().toISOString().substr(0, 10),
+      category_id: this.transaction?.category_id || null,
       }
     }
   },

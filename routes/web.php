@@ -22,26 +22,41 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', function () {
-        $userId = auth()->id();
+    $user = auth()->user();
+    $transactions = Transaction::where('user_id', $user->id)
+        ->with('category')
+        ->get();
 
-        $transactions = Transaction::where('user_id', $userId)->get();
-        $income       = $transactions->where('type', 'income')->sum('amount');
-        $expense      = $transactions->where('type', 'expense')->sum('amount');
-        $balance      = $income - $expense;
-        $goals        = SavingsGoal::where('user_id', $userId)->get();
-        $recent       = Transaction::where('user_id', $userId)
-            ->orderBy('date', 'desc')
-            ->limit(5)
-            ->get();
+    $income  = $transactions->where('type', 'income')->sum('amount');
+    $expense = $transactions->where('type', 'expense')->sum('amount');
+    $balance = $income - $expense;
+    $goals   = SavingsGoal::where('user_id', $user->id)->get();
+    $recent  = $transactions->sortByDesc('date')->take(5)->values();
 
-        return Inertia::render('Dashboard', [
-            'income'  => $income,
-            'expense' => $expense,
-            'balance' => $balance,
-            'goals'   => $goals,
-            'recent'  => $recent,
-        ]);
-    })->name('dashboard');
+    $withCategory = $transactions->filter(function($t) {
+        return $t->type === 'expense' && $t->category_id !== null;
+    });
+
+    $labels = [];
+    $values = [];
+
+    foreach ($withCategory->groupBy('category_id') as $catId => $group) {
+        $labels[] = $group->first()->category->name;
+        $values[] = (float) $group->sum('amount');
+    }
+
+    return Inertia::render('Dashboard', [
+        'income'    => $income,
+        'expense'   => $expense,
+        'balance'   => $balance,
+        'goals'     => $goals,
+        'recent'    => $recent,
+        'chartData' => [
+            'labels' => $labels,
+            'values' => $values,
+        ],
+    ]);
+})->name('dashboard');
 
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
     Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
@@ -53,15 +68,30 @@ Route::middleware('auth')->group(function () {
     Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', function () {
+        return Inertia::render('Profile');
+    })->name('profile.edit');
 
     Route::get('/savings', [SavingsGoalController::class, 'index'])->name('savings.index');
-    Route::post('/savings', [SavingsGoalController::class, 'store'])->name('savings.store');
-    Route::put('/savings/{savingsGoal}', [SavingsGoalController::class, 'update'])->name('savings.update');
-    Route::delete('/savings/{savingsGoal}', [SavingsGoalController::class, 'destroy'])->name('savings.destroy');
+Route::post('/savings', [SavingsGoalController::class, 'store'])->name('savings.store');
+Route::put('/savings/{savingsGoal}', [SavingsGoalController::class, 'update'])->name('savings.update');
+Route::delete('/savings/{savingsGoal}', [SavingsGoalController::class, 'destroy'])->name('savings.destroy');;
 
+    Route::get('/analytics', function () {
+        return Inertia::render('Analytics');
+    })->name('analytics');
+
+    Route::get('/support', function () {
+        return Inertia::render('Support');
+    })->name('support');
+
+    Route::get('/referrals', function () {
+        return Inertia::render('Referrals');
+    })->name('referrals');
+
+    Route::get('/settings', function () {
+        return Inertia::render('Settings');
+    })->name('settings');
 
 });
 
